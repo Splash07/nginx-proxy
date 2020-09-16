@@ -8,7 +8,7 @@ default:
     - ansible-lint --version
     - mkdir secret
     - echo "$ANSIBLE_SSHKEY" > secret/ansible.key
-    - echo ansible_hosts > etc/ansible/hosts
+    #- echo ansible_hosts > etc/ansible/hosts
     - cat etc/ansible/hosts
     - chmod 400 secret/ansible.key
     - export ANSIBLE_HOST_KEY_CHECKING=False
