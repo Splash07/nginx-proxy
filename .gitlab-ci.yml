@@ -39,7 +39,6 @@ predeploy:
 deploy:
   stage: deploy
   script:
-    - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
     - ansible-playbook -i inventory.yml --user ansible playbook.yml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
