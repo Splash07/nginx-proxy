@@ -1,0 +1,56 @@
+default:
+  image: ansible/ansible:ubuntu1404
+  
+  before_script:
+    - whoami
+    - apt-get update -qy
+    - ansible --version
+    - ansible-lint --version
+    - mkdir secret
+    - echo "$ANSIBLE_SSHKEY" > secret/ansible.key
+    - chmod 400 secret/ansible.key
+    - export ANSIBLE_HOST_KEY_CHECKING=False
+
+stages:
+  - verify
+  - prestaging
+  - staging
+  - predeploy
+  - deploy
+
+ansiible-verify:
+  stage: verify
+  script:
+    - ansible-lint -v *.yml
+    - ansilble-playbook --inventory inventory/production --syntax-check
+  rules:
+    - if: '$CI_BUILD_BEFORE_SHA == "0000000000000000000000000000000000000000"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH != "master" && $CI_COMMIT_BRANCH != "production"'
+      when: always
+
+prestaging:
+  stage: prestaging
+  script:
+    - ansible --private-key secret/ansible.key --user ansible --inventory inventory/staging all -m ping
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
+
+staging:
+  stage: staging
+  script:
+    - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
+    - ansible-playbook --private-key secret/ansible.key --user ansible --inventory inventory/staging playbook.yml
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
+
+deploy:
+  stage: deploy
+  script:
+    - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
+    - ansible-playbook --private-key secret/ansible.key --user ansible --inventory inventory/production playbook.yml
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "production"'
+      when: always
