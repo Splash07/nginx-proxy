@@ -1,19 +1,11 @@
 ---
-- hosts: letsencrypt
+- hosts: proxy
   become: true
   gather_facts: no
 
   pre_tasks:
+    - raw: apt-get update
     - raw: apt-get install -y python-simplejson
-    
-    - name: Copy new etc/hosts into place
-      copy:
-        src: ansible_hosts
-        dest: /etc/hosts
-        owner: root
-        group: root
-        mode: '0644'
-        backup: yes
 
   tasks:
     - name: Upgrade system
@@ -40,25 +32,30 @@
       template:
         src: templates/nginx-http.j2
         dest: /etc/nginx/sites-enabled/http
-
+    
     - name: Reload nginx to activate letsencrypt site
       service: name=nginx state=restarted
 
     - name: Create letsencrypt certificate
-      shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
+      command: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
       args:
         creates: /etc/letsencrypt/live/{{ domain_name }}
 
     - name: Generate dhparams
-      shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+      command: openssl dhparam -out /etc/nginx/dhparams.pem 2048
       args:
         creates: /etc/nginx/dhparams.pem
 
-    - name: Install nginx site for specified site
-      template:
-        src: templates/nginx-le.j2
-        dest: /etc/nginx/sites-enabled/le
+    #- name: Install nginx site for specified site
+    #  template:
+    #    src: templates/nginx-le.j2
+    #    dest: /etc/nginx/sites-enabled/le
 
+    - name: Install project config for nginx
+      template:
+        src: conf/project.conf.j2
+        dest: /etc/nginx/conf.d/project.conf
+      
     - name: Reload nginx to activate specified site
       service: name=nginx state=restarted
 

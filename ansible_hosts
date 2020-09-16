@@ -1,2 +1,0 @@
-[letsencrypt]
-team7.baitapcuoikhoa.xyz ansible_user=root letsencrypt_email=nguyendat203@gmail.com domain_name=team7.baitapcuoikhoa.xyz
