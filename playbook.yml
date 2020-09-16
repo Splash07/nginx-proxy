@@ -31,7 +31,7 @@
       template:
         src: templates/nginx-http.j2
         dest: /etc/nginx/sites-enabled/http
-
+    
     - name: Reload nginx to activate letsencrypt site
       service: name=nginx state=restarted
 
@@ -45,11 +45,16 @@
       args:
         creates: /etc/nginx/dhparams.pem
 
-    - name: Install nginx site for specified site
-      template:
-        src: templates/nginx-le.j2
-        dest: /etc/nginx/sites-enabled/le
+    #- name: Install nginx site for specified site
+    #  template:
+    #    src: templates/nginx-le.j2
+    #    dest: /etc/nginx/sites-enabled/le
 
+    - name: Install project config for nginx
+      template:
+        src: conf/project.conf.j2
+        dest: /etc/nginx/conf.d/project.conf
+      
     - name: Reload nginx to activate specified site
       service: name=nginx state=restarted
 
