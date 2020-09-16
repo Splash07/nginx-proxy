@@ -13,20 +13,20 @@ default:
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
 stages:
-  - verify
+  #- verify
   - predeploy
   - deploy
 
-ansible-verify:
-  stage: verify
-  script:
-    - ansible-lint -v *.yml
-    - ansilble-playbook --inventory inventory/master --syntax-check *.yml
-  rules:
-    - if: '$CI_BUILD_BEFORE_SHA == "0000000000000000000000000000000000000000"'
-      when: always
-    - if: '$CI_COMMIT_BRANCH != "master"'
-      when: always
+#ansible-verify:
+#  stage: verify
+#  script:
+#    - ansible-lint -v *.yml
+#    - ansilble-playbook --syntax-check *.yml
+#  rules:
+#    - if: '$CI_BUILD_BEFORE_SHA == "0000000000000000000000000000000000000000"'
+#      when: always
+#    - if: '$CI_COMMIT_BRANCH != "master"'
+#      when: always
 
 predeploy:
   stage: predeploy
