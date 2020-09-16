@@ -6,7 +6,7 @@ default:
     - apt-get update -qy
     - ansible --version
     - ansible-lint --version
-    - echo "$ANSIBLE_SSHKEY" > .ssh/id_rsa
+    - echo "$ANSIBLE_SSHKEY" > ~/.ssh/id_rsa
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
 stages:
