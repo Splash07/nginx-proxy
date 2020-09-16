@@ -15,35 +15,24 @@ default:
 
 stages:
   - verify
-  - prestaging
-  - staging
   - predeploy
   - deploy
 
-ansiible-verify:
+ansible-verify:
   stage: verify
   script:
     - ansible-lint -v *.yml
-    - ansilble-playbook --inventory inventory/production --syntax-check
+    - ansilble-playbook --inventory inventory/master --syntax-check *.yml
   rules:
     - if: '$CI_BUILD_BEFORE_SHA == "0000000000000000000000000000000000000000"'
       when: always
-    - if: '$CI_COMMIT_BRANCH != "master" && $CI_COMMIT_BRANCH != "production"'
+    - if: '$CI_COMMIT_BRANCH != "master"'
       when: always
 
-prestaging:
-  stage: prestaging
+predeploy:
+  stage: predeploy
   script:
-    - ansible --private-key secret/ansible.key --user ansible --inventory inventory/staging all -m ping
-  rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-      when: always
-
-staging:
-  stage: staging
-  script:
-    - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
-    - ansible-playbook --private-key secret/ansible.key --user ansible --inventory inventory/staging playbook.yml
+    - ansible --private-key secret/ansible.key --user ansible all -m ping
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
@@ -52,7 +41,7 @@ deploy:
   stage: deploy
   script:
     - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
-    - ansible-playbook --private-key secret/ansible.key --user ansible --inventory inventory/production playbook.yml
+    - ansible-playbook --private-key secret/ansible.key --user ansible playbook.yml
   rules:
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "production"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
