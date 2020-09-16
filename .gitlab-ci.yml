@@ -1,5 +1,8 @@
 default:
-  image: ansible/ansible:ubuntu1404
+  image: 
+    dockerfile: Dockerfile.ci
+    cache:
+     - $CI_REGISTRY:latest
   
   before_script:
     - whoami
