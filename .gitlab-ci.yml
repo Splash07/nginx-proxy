@@ -6,8 +6,8 @@ default:
     - apt-get update -qy
     - ansible --version
     - ansible-lint --version
-    - mkdir -p .ssh/
-    - touch ~/.ssh/id_rsa
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
     - echo "$ANSIBLE_SSHKEY" > ~/.ssh/id_rsa
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
