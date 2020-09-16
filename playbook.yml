@@ -5,7 +5,6 @@
 
   pre_tasks:
     - raw: apt-get install -y python-simplejson
-    
     - name: Copy new etc/hosts into place
       copy:
         src: ansible_hosts
@@ -20,7 +19,7 @@
       apt: upgrade=dist update_cache=yes
 
     - name: Install nginx
-      apt: name=nginx state=latest
+      apt: name=nginx state=1.18.0
 
     - name: install letsencrypt
       apt: name=letsencrypt state=latest
@@ -45,12 +44,12 @@
       service: name=nginx state=restarted
 
     - name: Create letsencrypt certificate
-      shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
+      command: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
       args:
         creates: /etc/letsencrypt/live/{{ domain_name }}
 
     - name: Generate dhparams
-      shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+      command: openssl dhparam -out /etc/nginx/dhparams.pem 2048
       args:
         creates: /etc/nginx/dhparams.pem
 
