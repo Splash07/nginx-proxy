@@ -12,7 +12,7 @@
       apt: upgrade=dist update_cache=yes
 
     - name: Install nginx
-      apt: name=nginx state=1.18.0
+      apt: name=nginx state=latest
 
     - name: install letsencrypt
       apt: name=letsencrypt state=latest
