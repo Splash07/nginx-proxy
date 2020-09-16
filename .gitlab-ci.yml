@@ -8,7 +8,7 @@ default:
     - ansible-lint --version
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "$ANSIBLE_SSHKEY" > ~/.ssh/id_rsa
+    - echo $ANSIBLE_SSHKEY > ~/.ssh/id_rsa
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
 stages:
