@@ -6,10 +6,7 @@ default:
     - apt-get update -qy
     - ansible --version
     - ansible-lint --version
-    - mkdir secret
-    - echo "$ANSIBLE_SSHKEY" > secret/ansible.key
-    #- echo ansible_hosts > etc/ansible/hosts
-    - chmod 400 secret/ansible.key
+    - echo "$ANSIBLE_SSHKEY" > .ssh/id_rsa
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
 stages:
@@ -31,7 +28,7 @@ stages:
 predeploy:
   stage: predeploy
   script:
-    - ansible --private-key secret/ansible.key --user ansible all -m ping
+    - ansible all -m ping -i inventory.yml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
@@ -40,7 +37,7 @@ deploy:
   stage: deploy
   script:
     - ./cicd-info.sh > roles/common/files/cicd-info.txt # Run script to get GitLab CI env vars. Ansible will copy then to hosts.
-    - ansible-playbook --private-key secret/ansible.key --user ansible playbook.yml
+    - ansible-playbook -i inventory.yml --user ansible playbook.yml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always

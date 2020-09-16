@@ -1,0 +1,2 @@
+[server]
+ansible_host=192.168.121.115 ansible_user=dylan letsencrypt_email=nguyendat203@gmail.com domain_name=team7.baitapcuoikhoa.xyz 

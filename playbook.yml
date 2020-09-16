@@ -1,18 +1,10 @@
 ---
-- hosts: letsencrypt
+- hosts: server
   become: true
   gather_facts: no
 
   pre_tasks:
     - raw: apt-get install -y python-simplejson
-    - name: Copy new etc/hosts into place
-      copy:
-        src: ansible_hosts
-        dest: /etc/hosts
-        owner: root
-        group: root
-        mode: '0644'
-        backup: yes
 
   tasks:
     - name: Upgrade system
