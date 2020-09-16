@@ -1,8 +1,5 @@
 default:
-  image: 
-    dockerfile: Dockerfile.ci
-    cache:
-     - $CI_REGISTRY:latest
+  image: registry.gitlab.com/splash07/ubuntu-ansible/ubuntu-ansible
   
   before_script:
     - whoami
