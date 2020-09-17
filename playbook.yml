@@ -23,6 +23,13 @@
     - name: Remove default nginx config
       file: name=/etc/nginx/sites-enabled/default state=absent
 
+    - name: Remove current nginx configs in config.d
+      find:
+        paths: /etc/nginx/conf.d
+        patterns: "*.conf"
+        use:regex: true
+      register: wildcard_files_to_delete
+
     - name: Install system nginx config
       template:
         src: templates/nginx.conf.j2
@@ -45,11 +52,6 @@
       command: openssl dhparam -out /etc/nginx/dhparams.pem 2048
       args:
         creates: /etc/nginx/dhparams.pem
-
-    #- name: Install nginx site for specified site
-    #  template:
-    #    src: templates/nginx-le.j2
-    #    dest: /etc/nginx/sites-enabled/le
 
     - name: Install project config for nginx
       template:
