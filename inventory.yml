@@ -1,2 +1,2 @@
 [proxy]
-nginx ansible_host=34.126.127.68 ansible_user=dylan letsencrypt_email=nguyendat203@gmail.com domain_name=team7.baitapcuoikhoa.xyz 
+nginx ansible_host=34.126.71.212 ansible_user=dylan letsencrypt_email=nguyendat203@gmail.com domain_name=team7.baitapcuoikhoa.xyz 

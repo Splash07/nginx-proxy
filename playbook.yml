@@ -23,6 +23,9 @@
     - name: Remove default nginx config
       file: name=/etc/nginx/sites-enabled/default state=absent
 
+    - name: Remove default nginx site available
+      file: name=/etc/nginx/sites-available/default state=absent
+
     - name: Remove current nginx configs in config.d
       find:
         paths: /etc/nginx/conf.d
