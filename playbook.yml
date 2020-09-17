@@ -27,7 +27,7 @@
       find:
         paths: /etc/nginx/conf.d
         patterns: "*.conf"
-        use:regex: true
+        use_regex: true
       register: wildcard_files_to_delete
 
     - name: Install system nginx config
