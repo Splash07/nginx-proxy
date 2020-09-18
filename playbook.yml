@@ -11,7 +11,7 @@
         state: directory
     
     - name: Copy current nginx configs to backup folder
-      shell: cp -r /etc/nginx/conf.d/ /tmp/nginx-conf-backup
+      shell: 'cp -r /etc/nginx/conf.d/ /tmp/nginx-conf-backup'
 
     - name: Remove current nginx configs in config.d
       find:
@@ -23,10 +23,10 @@
 
     - name: Install alls configs for nginx
       template:
-        src: {{ item.src }}
-        dest: {{ item.dest }}
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
       with_items:
-        - { src: conf/project.conf.j2, dest: /etc/nginx/conf.d/project.conf }
+        - "{ src: conf/project.conf.j2, dest: /etc/nginx/conf.d/project.conf }"
       
     - name: Reload nginx to activate specified site
       service: name=nginx state=restarted
