@@ -3,6 +3,8 @@
   become: true
   gather_facts: no
 
+  pre_tasks:
+    - raw: apt-get install -y python-simplejson
   tasks:
     #- name: Copy to .tmp folder (what to copy?)
     - name: Create a backup folder for current nginx configs
