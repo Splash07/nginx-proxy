@@ -20,13 +20,10 @@
         use_regex: true
       register: wildcard_files_to_delete
 
-
-    - name: Install alls configs for nginx
+    - name: Install project config for nginx
       template:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-      with_items:
-        - "{ src: conf/project.conf.j2, dest: /etc/nginx/conf.d/project.conf }"
+        src: conf/project.conf.j2
+        dest: /etc/nginx/conf.d/project.conf
       
     - name: Reload nginx to activate specified site
       service: name=nginx state=restarted
