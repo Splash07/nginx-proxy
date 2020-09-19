@@ -5,7 +5,8 @@
 
   pre_tasks:
     - raw: apt-get update
-    - raw: apt-get install -y python-simplejson
+    - raw: dpkg -l cron
+    - raw: apt-get install -y python-simplejson cron
 
   tasks:
     - name: Upgrade system
