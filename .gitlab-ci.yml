@@ -31,7 +31,7 @@ stages:
 predeploy:
   stage: predeploy
   script:
-    - ansible all -m ping -i inventory.yml
+    - ansible all -m ping -i inventory-init.yml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
