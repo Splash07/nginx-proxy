@@ -16,11 +16,7 @@
       shell: "cp -r /etc/nginx/conf.d/ /tmp/nginx-conf-backup"
 
     - name: Remove current nginx configs in config.d
-      find:
-        paths: /etc/nginx/conf.d
-        patterns: "*.conf"
-        use_regex: true
-      register: wildcard_files_to_delete
+      shell: "rm -rf /etc/nginx/confif.d/*"
 
     - name: Install project config for nginx
       template:
