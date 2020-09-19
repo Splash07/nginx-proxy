@@ -9,7 +9,6 @@ default:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo "$ANSIBLE_SSHKEY" > ~/.ssh/id_rsa
-    - cat ~/.ssh/id_rsa
     - chmod 400 ~/.ssh/id_rsa
     - export ANSIBLE_HOST_KEY_CHECKING=False
 
@@ -40,7 +39,7 @@ predeploy:
 deploy:
   stage: deploy
   script:
-    - ansible-playbook -i inventory.yml --user ansible -vvv playbook-init.yml
+    - ansible-playbook -i inventory.yml --user ansible -vvv playbook.yml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
