@@ -38,11 +38,13 @@
       template:
         src: templates/nginx.conf.j2
         dest: /etc/nginx/nginx.conf
+        mode: "u=rw,g=rw,o=rw"
 
     - name: Install nginx site for letsencrypt requests
       template:
         src: templates/nginx-http.j2
         dest: /etc/nginx/sites-enabled/http
+        mode: "u=rw,g=rw,o=rw"
     
     - name: Reload nginx to activate letsencrypt site
       service: name=nginx state=restarted
@@ -61,6 +63,7 @@
       template:
         src: conf/project.conf.j2
         dest: /etc/nginx/conf.d/project.conf
+        mode: "u=rw,g=rw,o=rw"
       
     - name: Reload nginx to activate specified site
       service: name=nginx state=restarted
