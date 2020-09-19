@@ -16,7 +16,7 @@
       shell: "cp -r /etc/nginx/conf.d/ /tmp/nginx-conf-backup"
 
     - name: Remove current nginx configs in config.d
-      shell: "rm -rf /etc/nginx/confif.d/*"
+      shell: "rm -rf /etc/nginx/config.d/*"
 
     - name: Install project config for nginx
       template:
