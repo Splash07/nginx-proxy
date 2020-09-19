@@ -28,11 +28,7 @@
       file: name=/etc/nginx/sites-available/default state=absent
 
     - name: Remove current nginx configs in config.d
-      find:
-        paths: /etc/nginx/conf.d
-        patterns: "*.conf"
-        use_regex: true
-      register: wildcard_files_to_delete
+      shell: "rm -rf /etc/nginx/config.d/*"
 
     - name: Install system nginx config
       template:
